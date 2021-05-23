@@ -1,62 +1,78 @@
-.rozwiniety
+.autocom
 {
-    background: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     border: 1px solid #dfe1e5;
     box-shadow: none;
     border-radius: 24px;
     z-index: 3;
-    padding-bottom: 5px;
+    width: 460px;
 }
 
-ul
+input
 {
-    display: block;
-    padding: 0;
-    padding-left: 15px;
+    background-color: transparent;
     margin: 0;
+    border: none;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    color: rgba(0,0,0,.87);
+    word-wrap: break-word;
+    outline: none;
+    width: 200px;
+}
+
+.result-city
+{
+    padding: 3px;
+}
+
+.autocom .result-city:hover 
+{
+    background-color: #e1e6eb;
     cursor: pointer;
 }
 
-ul:hover,
-ul:focus 
+.autocom .result-city.active
+{
+    background-color: #e1e6eb;
+}
+
+span
+{
+    padding-bottom: 3px;
+}
+
+.tekst
+{
+    display: flex;
+    background-color: transparent;
+    margin: 0;
+    border: none;
+    padding: 0;
+    word-wrap: break-word;
+    outline: none;
+    height: 34px;
+    font-size: 16px;
+    font-family: arial,sans-serif;
+    -webkit-appearance: textfield;
+    font-weight: 400;
+    text-align: start;
+    justify-content: space-around;
+} 
+
+.autocom:hover,
+.autocom:focus 
 {
     box-shadow: 0 0 0.3em 0.1em #d9d9d9;
 }
 
-ul img.lupa
+img.lupa
 {
-    padding: 0;
-    padding-top: 5px;
-    padding-right: 10px;
+    margin: 5px;
     height: 20px;
-    width: 20px;
-}
-
-.results ul
-{
-    display: block;
-    padding: 10px;
-    padding-left: 15px;
-    margin: 0;
+    padding-bottom: 1px;
+    padding-right: 10px;
     cursor: pointer;
 }
-
-.results ul:hover,
-.results ul:focus 
-{
-    box-shadow: 0 0 0.3em 0.1em #d9d9d9;
-}
-
-.results b
-{
-    font-weight: bold;
-}
-.results ul img.lupa
-{
-    padding: 0;
-    padding-top: 5px;
-    padding-right: 10px;
-    height: 20px;
-    width: 20px;
-}
-

@@ -1,17 +1,36 @@
 <!DOCTYPE html>
 <html lang="pl">
-
-<head>
+  <head>
     <meta charset="utf-8">
-    <title>Autocompleter component</title>
-    <link rel="stylesheet" href="autocompleter.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-    <script src="cities.js"></script>
-    <script src="autocompleter.js"></script>
-</head>
+    <title>Szukaj w Google</title>
+    <link rel="icon"  href="images_google/icon.png">
+    <link rel="stylesheet" type="text/css" href="autocompleter.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <script src="./cities.js"></script>
+    <script src="./autocompleter.js"></script>
+  </head>
 
-<body>
-    <script>
-        /* gdybym miał komponent to bym miał dokumentację*/
-    </script>
+  <body> 
+    <div id="app" :class="[change_class == 1 ? 'results' : 'home']">
+      <div id="top">
+        <v-autocompleter v-model="googleSearch" :options="cities" @enter="potwierdz()"></v-autocompleter>
+      </div>
+    </div>
 </body>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      enterValues: [],
+      cities: window.cities,
+      change_class: 0,
+      googleSearch: '',
+    },
+    methods: {
+      potwierdz(){
+        this.wyszukaj = this.googleSearch;
+      }
+    },
+});
+</script>
+</html>
