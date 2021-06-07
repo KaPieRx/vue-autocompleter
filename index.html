@@ -1,22 +1,121 @@
 <!DOCTYPE html>
 <html lang="pl">
-  <head>
-    <meta charset="utf-8">
-    <title>Szukaj w Google</title>
-    <link rel="icon"  href="images_google/icon.png">
-    <link rel="stylesheet" type="text/css" href="autocompleter.css">
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
-    <script src="./cities.js"></script>
-    <script src="./autocompleter.js"></script>
-  </head>
 
-  <body> 
-    <div id="app" :class="[change_class == 1 ? 'results' : 'home']">
-      <div id="top">
-        <v-autocompleter v-model="googleSearch" :options="cities" @enter="potwierdz()"></v-autocompleter>
-      </div>
+<head>
+  <meta charset="utf-8">
+  <title>Szukaj w Google</title>
+  <link rel="icon" href="images_google/icon.png">
+  <link rel="stylesheet" type="text/css" href="autocompleter.css">
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+  <script src="./cities.js"></script>
+  <script src="./autocompleter.js"></script>
+</head>
+
+<body>
+  <div id="app" :class="[change_class == 1 ? 'results' : 'home']">
+    <div id="top">
+      <v-autocompleter v-model="googleSearch" :options="cities" @enter="potwierdz()"></v-autocompleter>
     </div>
+  </div>
+
+  <div class="opis">
+
+    <h3>autocompleter.js</h3>
+    <a>value() w "watch" obserwuje zmianę tekstu w input i w czasie rzeczywistym filtruje wyniki:</a>
+    <pre>
+        value() {
+          if (this.pokaz) {
+              return;
+          }
+          if (this.value.length === 0) {
+              filteredCities = [];
+              return;
+          }
+          let returnedCities = [];
+          let searchLowerCase = this.value.toLowerCase();
+      }
+      </pre>
+
+    <a>Przy wpisywaniu tekstu w input, fragment tekstu wpisany zostaje pogrubiony w wynikach, pozostała część zapisana
+      jest
+      zwykłą czcionką:</a>
+
+    <pre>
+        this.cities.forEach((cityData) => {
+          if (returnedCities.length === 10 || !cityData.nameLowerCase.includes(searchLowerCase)) {
+              return;
+          }
+          returnedCities.push({
+              name: cityData.name,
+              nameHtml: cityData.nameLowerCase.replace(searchLowerCase, (match) => {
+                  return '<span class="bold">' + match + '</span>';
+              })
+          })
+      });
+
+      this.filteredCities = returnedCities;
+        }
+      </pre>
+
+    <a>Dzięki metodzie "potwierdz()", podczas kliknięcia przycisku enter na input lub elemencie wyszukiwania, wpisuje
+      tekst w
+      input oraz wywołuje "potwierdz":</a>
+
+    <pre>
+      methods:
+      {
+        potwierdz(name) {
+          this.pokaz = true;
+
+          if (name) {
+              this.value = name;
+          }
+
+          this.filteredCities = [];
+          this.$nextTick(() => {
+              this.pokaz = false;
+          });
+      },
+      </pre>
+
+    <a>Funkcjonalność strzałek z funkcją "GoTo() pozwala na przemieszczanie się po wynikach filtrowanych podczas wpisywania
+      danych do input:</a>
+
+    <pre>
+      goTo(index) {
+        if (!this.pokaz) {
+            index = 0;
+        }
+
+        if (index > this.filteredCities.length - 1) {
+            index = 0;
+        } else if (index < 0) {
+            index = this.filteredCities.length - 1;
+        }
+
+        this.pokaz = true;
+        this.podswietlony = index;
+        this.value = this.filteredCities[index].name;
+    },
+      </pre>
+
+    <a>"props" pozwalają przekazać do autocompletera dane, w tym przypadku jest to "value", czyli tekst wpisany w input
+      oraz "options", dzięki któremu przekazywane są dane, przez które filtruje autocompleter:</a>
+
+    <pre>
+        props: {
+          value: {
+            type: String,
+            default: ""
+          },
+          options: {
+            type: Array,
+            default: []
+          }
+        }
+      </pre>
 </body>
+
 <script>
   var app = new Vue({
     el: '#app',
@@ -27,10 +126,11 @@
       googleSearch: '',
     },
     methods: {
-      potwierdz(){
+      potwierdz() {
         this.wyszukaj = this.googleSearch;
       }
     },
-});
+  });
 </script>
+
 </html>
