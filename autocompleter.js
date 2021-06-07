@@ -2,29 +2,22 @@ Vue.component('v-autocompleter', {
     template: `
     <div class="autocom">
         <div class="tekst">
-            <img class="lupa" src="lupa.png" @click="potwierdz()" title="Szukaj">
             <input
             :value="value"
             type="text"
             @input="$emit('input', $event.target.value)"
-            @keyup.enter="potwierdz()"
+            @keyup.enter="potwierdz(value)"
             @keyup.down="goTo(podswietlony + 1)" 
             @keyup.up="goTo(podswietlony - 1)"/>
-            <img class="klaw" src="klawiatura.png" title="Narzędzia do wprowadzania tekstu">
-            <img class="mikro" src="mikro.png" title="Wyszukiwanie głosowe">
         </div>
         <div class="result-city" v-for="(city, index) in filteredCities"
         :class="{active : pokaz && podswietlony === index}" @click="potwierdz(city.name)">
-            <img class="lupa" src="lupa.png" title="Szukaj">
             <span v-html="city.nameHtml"></span>
         </div>
     </div>`,
 
     data: function () {
         return {
-            isOnResults: false,
-            googleSearch_temp: "",
-            wyszukaj: "",
             cities: window.cities.map((cityData) => {
                 cityData.nameLowerCase = cityData.name.toLowerCase();
                 return cityData;
@@ -35,19 +28,28 @@ Vue.component('v-autocompleter', {
         };
     },
 
-    props: ['value', 'options'],
+    props: {
+        value: {
+          type: String,
+          default: ""
+        },
+        options: {
+          type: Array,
+          default: []
+        }
+      },
 
     watch: {
-        googleSearch_temp() {
+        value() {
             if (this.pokaz) {
                 return;
             }
-            if (this.googleSearch_temp.length === 0) {
+            if (this.value.length === 0) {
                 filteredCities = [];
                 return;
             }
             let returnedCities = [];
-            let searchLowerCase = this.googleSearch_temp.toLowerCase();
+            let searchLowerCase = this.value.toLowerCase();
 
             this.cities.forEach((cityData) => {
                 if (returnedCities.length === 10 || !cityData.nameLowerCase.includes(searchLowerCase)) {
@@ -79,16 +81,15 @@ Vue.component('v-autocompleter', {
 
             this.pokaz = true;
             this.podswietlony = index;
-            this.googleSearch_temp = this.filteredCities[index].name;
+            this.value = this.filteredCities[index].name;
         },
         potwierdz(name) {
             this.pokaz = true;
 
             if (name) {
-                this.googleSearch_temp = name;
+                this.value = name;
             }
 
-            this.isOnResults = true;
             this.filteredCities = [];
             this.$nextTick(() => {
                 this.pokaz = false;

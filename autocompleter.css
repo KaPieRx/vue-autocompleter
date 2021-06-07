@@ -53,26 +53,16 @@ span
     padding: 0;
     word-wrap: break-word;
     outline: none;
-    height: 34px;
     font-size: 16px;
     font-family: arial,sans-serif;
     -webkit-appearance: textfield;
     font-weight: 400;
     text-align: start;
-    justify-content: space-around;
+    justify-content: flex-start;
 } 
 
 .autocom:hover,
 .autocom:focus 
 {
     box-shadow: 0 0 0.3em 0.1em #d9d9d9;
-}
-
-img.lupa
-{
-    margin: 5px;
-    height: 20px;
-    padding-bottom: 1px;
-    padding-right: 10px;
-    cursor: pointer;
 }
